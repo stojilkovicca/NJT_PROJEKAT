@@ -1,0 +1,5 @@
+# 1) build nije obavezan za run, ali čisto:
+mvn clean package
+
+# 2) direktno pokretanje iz koda
+mvn spring-boot:run
