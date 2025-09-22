@@ -3,3 +3,26 @@ mvn clean package
 
 # 2) direktno pokretanje iz koda
 mvn spring-boot:run
+
+
+//za testiranje za zanr
+http://localhost:8080/api/genre
+
+{
+  "name": "Drama (izm)"
+}
+
+//testiranje za movie, mora da se posalje zanr id koji postoji u bazi
+http://localhost:8080/api/movie
+{
+  "title": "Inception",
+  "description": "A mind-bending thriller.",
+  "duration": 148,
+  "rating": 9.0,
+  "imdbRating": 8.8,
+  "producer": "Emma Thomas",
+  "actors": "Leonardo DiCaprio, Joseph Gordon-Levitt",
+  "genreId": 2
+  
+}
+

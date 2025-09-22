@@ -8,6 +8,7 @@ com\mycompany\njtspringbioskop\repository\impl\GenreRepository.class
 com\mycompany\njtspringbioskop\dto\impl\TicketDto.class
 com\mycompany\njtspringbioskop\mapper\impl\UserMapper.class
 com\mycompany\njtspringbioskop\dto\impl\SeatDto.class
+com\mycompany\njtspringbioskop\repository\impl\MovieRepository.class
 com\mycompany\njtspringbioskop\BioskopAplikacija.class
 com\mycompany\njtspringbioskop\entity\impl\Ticket.class
 com\mycompany\njtspringbioskop\entity\MyEntity.class
@@ -16,6 +17,8 @@ com\mycompany\njtspringbioskop\entity\impl\Movie.class
 com\mycompany\njtspringbioskop\dto\impl\UserDto.class
 com\mycompany\njtspringbioskop\entity\impl\Projection.class
 com\mycompany\njtspringbioskop\mapper\impl\ProjectionMapper.class
+com\mycompany\njtspringbioskop\controller\MovieController.class
+com\mycompany\njtspringbioskop\servis\MovieServis.class
 com\mycompany\njtspringbioskop\dto\MyDto.class
 com\mycompany\njtspringbioskop\servis\GenreServis.class
 com\mycompany\njtspringbioskop\entity\impl\Role.class
