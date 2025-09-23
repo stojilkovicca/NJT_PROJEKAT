@@ -1,3 +1,4 @@
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\controller\HallController.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\entity\impl\Genre.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\servis\GenreServis.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\entity\impl\Hall.java
@@ -15,6 +16,7 @@ C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompa
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\entity\impl\Seat.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\MovieMapper.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\MyDto.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\servis\HallServis.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\HallMapper.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\entity\impl\Reservation.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\servis\MovieServis.java
@@ -23,9 +25,11 @@ C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompa
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\ReservationMapper.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\ProjectionDto.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\ProjectionMapper.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\config\ValidationAdvice.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\config\SecurityConfig.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\SeatDto.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\GenreDto.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\HallRepository.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\UserDto.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\entity\impl\Projection.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\controller\MovieController.java

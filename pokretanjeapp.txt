@@ -26,3 +26,18 @@ http://localhost:8080/api/movie
   
 }
 
+//testiranje za tabelu hall
+
+http://localhost:8080/api/hall
+{
+    "id": 1,
+    "name": "Sala 2",
+    "capacity": 120,
+    "rows": 20,
+    "seatsPerRow": 6
+}
+
+http://localhost:8080/api/hall/1/generate-seats?rows=20&seatsPerRow=6
+POST /api/hall – pravi/menja samu salu (name, capacity, rows, seatsPerRow).
+
+POST /api/hall/{id}/generate-seats?... – generiše zapise u tabeli seats za tu salu (R×S sedišta) i usput ažurira rows/seatsPerRow/capacity. Vraća isti HallDto, ali je “sa strane” upisao 120 redova u seats (u tvom primeru).

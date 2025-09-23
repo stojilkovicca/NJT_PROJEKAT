@@ -21,7 +21,7 @@ public class Hall {
     @Column(nullable = false)
     private int capacity;
 
-    // opciono: ako želiš i ovde držati raspored
+    @Column(name = "row_count")   //ovde smo morali da preimenujemo kolonu da se ne zove rows jer je to rezervisana rec u SQL pa baca exc
     private Integer rows;
     private Integer seatsPerRow;
 
