@@ -60,3 +60,16 @@ http://localhost:8080/api/reservation
   "userId": 1,
   "projectionId": 1
 }
+
+
+//seats
+http://localhost:8080/api/seat/hall/1  
+
+http://localhost:8080/api/seat/
+
+{
+  "hallId": 1,
+  "rowNumber": 1,
+  "seatNumber": 2,
+  "label": "A-2"
+}
