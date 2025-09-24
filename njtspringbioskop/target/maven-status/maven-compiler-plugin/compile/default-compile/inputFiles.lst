@@ -22,6 +22,7 @@ C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompa
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\DtoEntityMapper.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\servis\ProjectionServis.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\controller\HallController.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\controller\TicketController.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\UserMapper.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\SeatMapper.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\entity\MyEntity.java
@@ -32,6 +33,8 @@ C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompa
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\GenreMapper.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\MovieRepository.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\ReservationRepository.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\TicketRepository.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\servis\TicketServis.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\MyDto.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\HallMapper.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\entity\impl\Reservation.java
