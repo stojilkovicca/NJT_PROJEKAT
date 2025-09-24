@@ -4,7 +4,6 @@ com\mycompany\njtspringbioskop\mapper\impl\HallMapper.class
 com\mycompany\njtspringbioskop\dto\impl\ProjectionDto.class
 com\mycompany\njtspringbioskop\repository\MyAppRepository.class
 com\mycompany\njtspringbioskop\dto\impl\HallDto.class
-com\mycompany\njtspringbioskop\config\ValidationAdvice.class
 com\mycompany\njtspringbioskop\entity\impl\User.class
 com\mycompany\njtspringbioskop\repository\impl\GenreRepository.class
 com\mycompany\njtspringbioskop\dto\impl\TicketDto.class

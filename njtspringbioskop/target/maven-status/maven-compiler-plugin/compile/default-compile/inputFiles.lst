@@ -10,6 +10,7 @@ C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompa
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\TicketDto.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\GenreRepository.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\TicketMapper.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\controller\ProjectionController.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\entity\impl\User.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\GenreMapper.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\MovieRepository.java
@@ -25,9 +26,9 @@ C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompa
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\ReservationMapper.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\ProjectionDto.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\impl\ProjectionMapper.java
-C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\config\ValidationAdvice.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\config\SecurityConfig.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\SeatDto.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\ProjectionRepository.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\GenreDto.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\HallRepository.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\UserDto.java
@@ -39,3 +40,4 @@ C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompa
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\entity\impl\Ticket.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\HallDto.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\mapper\DtoEntityMapper.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\servis\ProjectionServis.java

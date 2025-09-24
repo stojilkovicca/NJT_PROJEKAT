@@ -41,3 +41,15 @@ http://localhost:8080/api/hall/1/generate-seats?rows=20&seatsPerRow=6
 POST /api/hall – pravi/menja samu salu (name, capacity, rows, seatsPerRow).
 
 POST /api/hall/{id}/generate-seats?... – generiše zapise u tabeli seats za tu salu (R×S sedišta) i usput ažurira rows/seatsPerRow/capacity. Vraća isti HallDto, ali je “sa strane” upisao 120 redova u seats (u tvom primeru).
+
+
+
+//projection
+http://localhost:8080/api/projection
+{
+  "dateTime": "2025-10-01T19:30:00",
+  "basePrice": 450.0,
+  "hallId": 1,
+  "movieId": 3
+}
+
