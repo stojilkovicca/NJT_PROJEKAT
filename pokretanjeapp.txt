@@ -53,3 +53,10 @@ http://localhost:8080/api/projection
   "movieId": 3
 }
 
+//reservation
+http://localhost:8080/api/reservation
+{
+  "numberOfTickets": 3,
+  "userId": 1,
+  "projectionId": 1
+}
