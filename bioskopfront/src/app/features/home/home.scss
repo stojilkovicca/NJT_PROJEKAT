@@ -1,0 +1,31 @@
+:host { display:block; background: radial-gradient(1200px 600px at 70% -10%, #7c4dff33, transparent), #0c0c10; color:#e9ecf1; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+.btn { border-radius: 12px; padding:10px 16px; border:1px solid transparent; cursor:pointer;
+  &.primary { background:#7c4dff; color:#fff; }
+  &.ghost { background:transparent; border-color:#7c4dff; color:#fff; }
+  &.white { background:#fff; color:#12131a; }
+}
+
+.hero { padding: 56px 0 34px; 
+  .container { display:grid; grid-template-columns: 1.3fr .7fr; gap: 24px; align-items:center; }
+  .text h1 { font-size: 2.4rem; margin: 0 0 8px; }
+  .text p { color:#cfd3dc; max-width: 54ch; }
+  .cta { display:flex; gap:12px; margin: 16px 0 8px; }
+  .badges { list-style: none; display:flex; gap:14px; padding:0; margin:10px 0 0; color:#b6bdd0; }
+  .side-card .glass {
+    border-radius: 16px; padding: 22px; background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.12);
+  }
+}
+
+.grid { padding: 10px 0 64px;
+  .section-head { display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;
+    h2 { margin:0; font-size:1.4rem; }
+    .more { color:#98a1b3; text-decoration:none; &:hover{ color:#fff; } }
+  }
+  .cards { display:grid; grid-template-columns: repeat(4, 1fr); gap:16px; }
+  @media (max-width: 900px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .cards { grid-template-columns: 1fr; } }
+}

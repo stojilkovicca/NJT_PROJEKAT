@@ -73,3 +73,22 @@ http://localhost:8080/api/seat/
   "seatNumber": 2,
   "label": "A-2"
 }
+
+
+//instalacija angulara
+
+treba nam node i npm   https://nodejs.org/en/download
+(verovatno vec imamo od ranije)
+
+
+node -v
+npm -v
+
+instalacija angulara bas
+npm install -g @angular/cli
+ng version
+
+//kreiranje angular projekta 
+
+
+ng new bioskopfront --routing --style=scss --skip-git

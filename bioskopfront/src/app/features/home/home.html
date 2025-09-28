@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+
+<section class="hero">
+  <div class="container">
+    <div class="text">
+      <h1>Dobrodošli u Bioskop</h1>
+      <p>Najbolji filmovi, besprekoran zvuk i najudobnija sedišta u gradu. 
+         Rezervišite karte online i preskočite red.</p>
+      <div class="cta">
+        <button class="btn primary">Pogledaj repertoar</button>
+        <button class="btn ghost">Akcije i popusti</button>
+      </div>
+      <ul class="badges">
+        <li>🍿 IMAX zvuk</li>
+        <li>🎟️ Online rezervacije</li>
+        <li>🕘 Late-night projekcije</li>
+      </ul>
+    </div>
+    <div class="side-card">
+      <div class="glass">
+        <h3>Večeras u ponudi</h3>
+        <p>Specijalne projekcije sa 20% popusta za studente.</p>
+        <button class="btn white">Rezerviši sada</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="grid">
+  <div class="container">
+    <div class="section-head">
+      <h2>Top filmovi</h2>
+      <a class="more" href="#">Vidi sve →</a>
+    </div>
+    <div class="cards">
+      <app-movie-card *ngFor="let m of topMovies"
+        [title]="m.title" [genre]="m.genre" [poster]="m.poster" [rating]="m.rating">
+      </app-movie-card>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <app-footer></app-footer>
+</footer>

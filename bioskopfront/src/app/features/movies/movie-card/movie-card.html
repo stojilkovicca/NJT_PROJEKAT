@@ -1,0 +1,11 @@
+<article class="card">
+  <div class="poster" [style.backgroundImage]="'url(' + poster + ')'"></div>
+  <div class="body">
+    <h3>{{ title }}</h3>
+    <p class="muted">{{ genre }}</p>
+    <div class="bottom">
+      <span *ngIf="rating">★ {{ rating | number:'1.1-1' }}</span>
+      <button class="btn small">Rezerviši</button>
+    </div>
+  </div>
+</article>
