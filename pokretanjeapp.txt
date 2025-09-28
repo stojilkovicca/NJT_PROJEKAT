@@ -92,3 +92,18 @@ ng version
 
 
 ng new bioskopfront --routing --style=scss --skip-git
+
+
+//kreiranje fajlova 
+
+
+//auth
+ng g s core/auth --skip-tests
+ng g interceptor core/token --skip-tests
+ng g c pages/register --standalone --inline-template --inline-style --skip-tests
+ng g @angular/router:route register --path register --title "Registracija" --standalone --module src/app/app.routes.ts --skip-tests
+
+
+//dodavanje stranica za login i registraciju
+npx ng g c pages/login --standalone --inline-template --inline-style --skip-tests
+

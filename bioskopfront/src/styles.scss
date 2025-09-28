@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+/* 1) Font (Inter) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* 2) Reset & baza */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+html { background: #0c0c10; }  /* ako negde "probije", nema bele linije */
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+  background: #0c0c10;
+  color: #e9ecf1;
+}
+
+/* 3) (opciono) osnovni link/button stilovi */
+a { color: inherit; }
+button { font: inherit; }

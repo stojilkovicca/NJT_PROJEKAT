@@ -73,16 +73,21 @@ import { NgFor } from '@angular/common';
     .section-head h2 { margin:0; font-size:1.4rem; }
     .more { color:#98a1b3; text-decoration:none; }
     .more:hover { color:#fff; }
-    .cards { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; }
-    @media (max-width:900px){ .cards{ grid-template-columns:repeat(2,1fr);} }
-    @media (max-width:560px){ .cards{ grid-template-columns:1fr;} .hero .container{ grid-template-columns:1fr; } }
+     .cards{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* svi stubci ~isti */
+    gap:16px;
+    align-items: stretch;   /* rastegni sve kartice po visini */
+  }
+  @media (max-width:900px){ .cards{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width:560px){ .cards{ grid-template-columns: 1fr; } }
   `]
 })
 export class HomeComponent {
   topMovies = [
-    { title: 'Dune: Part Two', genre: 'SF, Avantura', rating: 8.7, poster: '/assets/posters/dune2.jpg' },
-    { title: 'Oppenheimer', genre: 'Drama, Biografija', rating: 8.6, poster: '/assets/posters/oppenheimer.jpg' },
-    { title: 'Inside Out 2', genre: 'Animirani', rating: 8.1, poster: '/assets/posters/insideout2.jpg' },
-    { title: 'Joker: Folie à Deux', genre: 'Drama', rating: 7.9, poster: '/assets/posters/joker2.jpg' }
+    { title: 'Dune: Part Two', genre: 'SF, Avantura', rating: 8.7, poster: 'https://s3.amazonaws.com/nightjarprod/content/uploads/sites/261/2023/12/17144929/cBDoFHJVcZqAonkTyhN9sMEggi5-1-scaled.jpg' },
+    { title: 'Oppenheimer', genre: 'Drama, Biografija', rating: 8.6, poster: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/Oppenheimer_%28film%29.jpg/250px-Oppenheimer_%28film%29.jpg' },
+    { title: 'Inside Out 2', genre: 'Animirani', rating: 8.1, poster: 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Inside_Out_2_poster.jpg/250px-Inside_Out_2_poster.jpg' },
+ 
   ];
 }

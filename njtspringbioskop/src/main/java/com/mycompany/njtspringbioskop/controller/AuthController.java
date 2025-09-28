@@ -10,7 +10,7 @@ import com.mycompany.njtspringbioskop.security.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin(origins = "http://localhost:4200") 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
