@@ -10,7 +10,8 @@ import com.mycompany.njtspringbioskop.security.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = "http://localhost:4200") 
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -27,20 +28,26 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
-        if (users.existsByUsername(req.getUsername()))
+        if (users.existsByUsername(req.getUsername())) {
             return ResponseEntity.badRequest().body("Username taken");
-        if (users.existsByEmail(req.getEmail()))
+        }
+        if (users.existsByEmail(req.getEmail())) {
             return ResponseEntity.badRequest().body("Email taken");
+        }
 
         User u = new User();
         u.setUsername(req.getUsername());
         u.setEmail(req.getEmail());
         u.setPasswordHash(encoder.encode(req.getPassword()));
         u.setRole(Role.USER);
+
         users.save(u);
 
         String token = jwt.generate(u.getUsername(), u.getRole().name());
-        return ResponseEntity.ok(new LoginResponse(token, u.getRole().name(), u.getUsername()));
+     
+        return ResponseEntity.ok(
+            new LoginResponse(token, u.getRole().name(), u.getUsername(), u.getId())
+        );
     }
 
     @PostMapping("/login")
@@ -51,6 +58,9 @@ public class AuthController {
         }
 
         String token = jwt.generate(u.getUsername(), u.getRole().name());
-        return ResponseEntity.ok(new LoginResponse(token, u.getRole().name(), u.getUsername()));
+      
+        return ResponseEntity.ok(
+            new LoginResponse(token, u.getRole().name(), u.getUsername(), u.getId())
+        );
     }
 }
