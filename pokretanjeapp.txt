@@ -107,3 +107,18 @@ ng g @angular/router:route register --path register --title "Registracija" --sta
 //dodavanje stranica za login i registraciju
 npx ng g c pages/login --standalone --inline-template --inline-style --skip-tests
 
+
+//dodavanje stranica za korsinika koji nije admin
+
+# Guard za auth-protekciju ruta
+npx ng g guard core/auth --standalone --skip-tests
+
+# Servisi
+npx ng g s core/movie --skip-tests
+npx ng g s core/projection --skip-tests
+npx ng g s core/reservation --skip-tests
+
+# Stranice
+npx ng g c pages/movies --standalone --inline-template --inline-style --skip-tests
+npx ng g c pages/movie-details --standalone --inline-template --inline-style --skip-tests
+
