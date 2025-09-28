@@ -15,7 +15,15 @@ import { AuthService } from '../../core/auth';
         <nav class="links">
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">Početna</a>
           <a routerLink="/movies" routerLinkActive="active">Filmovi</a>
-          <a routerLink="/about" routerLinkActive="active">O nama</a>
+
+          <!-- ADMIN MENI – vidi se samo ako je uloga ADMIN -->
+          <ng-container *ngIf="isAdmin">
+            <span class="sep">|</span>
+            <a routerLink="/admin/movies" routerLinkActive="active">Admin · Filmovi</a>
+            <a routerLink="/admin/projections" routerLinkActive="active">Projekcije</a>
+            <a routerLink="/admin/halls" routerLinkActive="active">Sale</a>
+            <!-- po želji: <a routerLink="/admin/movies/new" routerLinkActive="active">+ Novi film</a> -->
+          </ng-container>
         </nav>
 
         <div class="actions">
@@ -40,9 +48,10 @@ import { AuthService } from '../../core/auth';
     .container { max-width:1100px; margin:0 auto; padding:10px 16px;
       display:grid; grid-template-columns:1fr auto auto; gap:16px; align-items:center; }
     .brand { font-weight:700; letter-spacing:.3px; text-decoration:none; color:#fff; font-size:1.1rem; }
-    .links { display:flex; gap:16px; }
+    .links { display:flex; gap:16px; align-items:center; }
     .links a { color:#cfd3dc; text-decoration:none; font-weight:500; padding:6px 4px; border-bottom:2px solid transparent; }
     .links a.active { color:#fff; border-bottom-color:#7c4dff; }
+    .sep { color:#6f7390; opacity:.6; margin:0 4px; }
     .actions { display:flex; gap:8px; align-items:center; }
     .user { color:#cfd3dc; margin-right:6px; }
     .btn { border-radius:999px; padding:8px 14px; border:1px solid transparent; cursor:pointer; }
@@ -54,6 +63,7 @@ export class NavbarComponent {
   constructor(private auth: AuthService, private router: Router) {}
 
   get isLoggedIn() { return this.auth.isLoggedIn; }
+  get isAdmin()    { return this.auth.isAdmin; }
   get username()   { return this.auth.username; }
 
   logout() {
