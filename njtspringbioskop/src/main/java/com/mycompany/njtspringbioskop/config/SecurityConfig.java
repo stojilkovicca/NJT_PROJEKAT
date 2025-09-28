@@ -1,43 +1,53 @@
 package com.mycompany.njtspringbioskop.config;
 
+ 
+import com.mycompany.njtspringbioskop.security.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.cors.CorsConfigurationSource;
-
-import java.util.List;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity // za @PreAuthorize
 public class SecurityConfig {
 
+    private final JwtAuthFilter jwtFilter;
+
+    public SecurityConfig(JwtAuthFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
+
+    @Bean PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())            // za REST (dev)
-            .cors(Customizer.withDefaults())         // koristi bean ispod
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()            // pusti SVE
-            )
-            .httpBasic(b -> b.disable())             // nema basic auth
-            .formLogin(f -> f.disable());            // nema login forme
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+           .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+           .authorizeHttpRequests(auth -> auth
+               // auth endpoindi bez tokena
+               .requestMatchers("/api/auth/**").permitAll()
+               // javni GET-ovi (po želji): filmovi, projekcije...
+               .requestMatchers(HttpMethod.GET, "/api/movies/**", "/api/projections/**", "/api/halls/**", "/api/genres/**").permitAll()
+               // admin CRUD
+               .requestMatchers("/api/admin/**").hasRole("ADMIN")
+               // sve ostalo traži login
+               .anyRequest().authenticated()
+           )
+           .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
-    // CORS (ako radiš sa Angular-om na :4200; Postmanu ne treba)
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:4200","http://localhost:3000"));
-        cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","PATCH","OPTIONS"));
-        cfg.setAllowedHeaders(List.of("*"));
-        cfg.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", cfg);
-        return source;
+    AuthenticationManager authenticationManager(AuthenticationConfiguration cfg) throws Exception {
+        return cfg.getAuthenticationManager();
     }
 }

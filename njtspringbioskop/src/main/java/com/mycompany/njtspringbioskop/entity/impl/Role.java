@@ -3,11 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Enum.java to edit this template
  */
 package com.mycompany.njtspringbioskop.entity.impl;
-
-/**
- *
- * @author vanja
- */
+ 
 public enum Role {
     USER, ADMIN
 }
