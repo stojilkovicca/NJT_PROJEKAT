@@ -13,6 +13,7 @@ import { MovieFormComponent } from './admin/movie-form/movie-form';
 import { ProjectionsPageComponent } from './admin/projections-page/projections-page';
 import { HallsPageComponent } from './admin/halls-page/halls-page';
 import { LoginComponent } from './pages/login/login';
+import { ReservationsPageComponent } from './admin/reservations-page/reservations-page';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -30,7 +31,8 @@ export const routes: Routes = [
       { path: 'movies', component: MoviesPageComponent },
       { path: 'movies/new', component: MovieFormComponent },
       { path: 'projections', component: ProjectionsPageComponent },
-      { path: 'halls', component: HallsPageComponent }
+      { path: 'halls', component: HallsPageComponent },
+        { path: 'reservations', component: ReservationsPageComponent }
     ]
   },
 

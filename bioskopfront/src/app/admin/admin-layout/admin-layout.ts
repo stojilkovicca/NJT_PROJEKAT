@@ -10,9 +10,11 @@ import { RouterLink, RouterOutlet } from '@angular/router';
       <header class="bar">
         <h1>Admin panel</h1>
         <nav class="tabs">
+        <a routerLink="/admin/reservations">Rezervacije</a>
           <a routerLink="/admin/movies">Filmovi</a>
           <a routerLink="/admin/projections">Projekcije</a>
           <a routerLink="/admin/halls">Sale</a>
+           
         </nav>
       </header>
 

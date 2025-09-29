@@ -17,7 +17,8 @@ export interface ReservationDto extends ReservationCreateDto {
 export class ReservationService {
   private readonly base = 'http://localhost:8080/api/reservation';
   constructor(private http: HttpClient) {}
-
+  getAll(){ return this.http.get<ReservationDto[]>(this.base); }
+  delete(id: number){ return this.http.delete(`${this.base}/${id}`, { responseType:'text' }); }
   create(payload: ReservationCreateDto): Observable<ReservationDto> {
     return this.http.post<ReservationDto>(this.base, payload);
   }

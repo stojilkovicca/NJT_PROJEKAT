@@ -122,3 +122,5 @@ npx ng g s core/reservation --skip-tests
 npx ng g c pages/movies --standalone --inline-template --inline-style --skip-tests
 npx ng g c pages/movie-details --standalone --inline-template --inline-style --skip-tests
 
+//instalacija bibilioteke za qr kod i generisanje fajlova
+npm i jspdf qrcode
