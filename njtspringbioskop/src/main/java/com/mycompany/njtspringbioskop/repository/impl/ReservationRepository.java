@@ -71,11 +71,5 @@ public class ReservationRepository implements MyAppRepository<Reservation, Long>
          .getResultList();
     }
 
-    public long sumTicketsForProjection(Long projectionId) {
-        Long sum = em.createQuery(
-                "SELECT COALESCE(SUM(r.numberOfTickets),0) FROM Reservation r WHERE r.projection.id = :pid",
-                Long.class
-        ).setParameter("pid", projectionId).getSingleResult();
-        return sum == null ? 0L : sum;
-    }
+ 
 }

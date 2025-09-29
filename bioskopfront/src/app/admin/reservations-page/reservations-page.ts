@@ -8,6 +8,7 @@ import { HallService, HallDto } from '../../core/hall';
 import { MovieService, MovieDto } from '../../core/movie';
 import jsPDF from 'jspdf';
 import { TicketDto, TicketService } from '../../core/ticket';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-reservations-page',
@@ -74,11 +75,11 @@ import { TicketDto, TicketService } from '../../core/ticket';
       </div>
     </section>
 
-    <!-- MODAL: izdavanje karte -->
+    <!-- MODAL: izdavanje karata (više sedišta) -->
     <div class="modal-backdrop" *ngIf="issueOpen()" (click)="closeIssue()"></div>
     <div class="modal" *ngIf="issueOpen()" role="dialog" aria-modal="true">
       <div class="modal-head">
-        <h3>Izdavanje karte — Rez #{{ currentRes()?.id }}</h3>
+        <h3>Izdavanje karata — Rez #{{ currentRes()?.id }}</h3>
         <button class="icon-btn" (click)="closeIssue()" aria-label="Zatvori">✕</button>
       </div>
 
@@ -91,14 +92,20 @@ import { TicketDto, TicketService } from '../../core/ticket';
           <div><b>Sala:</b> {{ hall(p.hallId)?.name }} (cap {{ hall(p.hallId)?.capacity }})</div>
         </div>
 
-        <form [formGroup]="issueForm" class="issue-form" (ngSubmit)="issueTicket()">
+        <form [formGroup]="issueForm" class="issue-form" (ngSubmit)="issueTickets()">
           <label>
-            Cena karte (RSD)
+            Cena (po karti, RSD)
             <input type="number" formControlName="price" min="0"/>
           </label>
-          <div class="hint muted">Izaberi sedište klikom na grid ispod.</div>
-          <input type="hidden" formControlName="seatId" />
-          <div class="err" *ngIf="issueForm.invalid && issueForm.touched">Unesi cenu i izaberi sedište.</div>
+
+          <div class="hint muted">
+            Dozvoljeno sedišta: <b>{{ currentRes()?.numberOfTickets }}</b> ·
+            Izabrano: <b>{{ selectedSeatIds().length }}</b>
+          </div>
+
+          <input type="hidden" formControlName="seatIds" />
+          <div class="err" *ngIf="priceInvalid()">Unesi cenu (≥ 0).</div>
+          <div class="err" *ngIf="seatInvalid()">Izaberi bar jedno sedište (maks. {{ currentRes()?.numberOfTickets }}).</div>
 
           <div class="seat-wrap" *ngIf="gridReady()">
             <div class="row-labels">
@@ -111,18 +118,28 @@ import { TicketDto, TicketService } from '../../core/ticket';
                 class="seat"
                 [class.empty]="!cell"
                 [class.taken]="cell && taken(cell.id)"
-                [class.sel]="cell && selectedSeatId()===cell.id"
-                [disabled]="!cell || taken(cell.id)"
-                (click)="cell && chooseSeat(cell.id)">
+                [class.sel]="cell && isSelected(cell.id)"
+                [disabled]="!cell || taken(cell.id) || (reachedLimit() && !isSelected(cell.id))"
+                (click)="cell && toggleSeat(cell.id)">
                 {{ cell?.label || '' }}
               </button>
             </div>
           </div>
 
           <div class="actions">
-            <button class="btn primary" type="submit" [disabled]="issueForm.invalid || busy()">Izdaj kartu (PDF)</button>
+            <button
+              class="btn primary"
+              type="submit"
+              [disabled]="!canSubmit() || busy()"
+            >
+              Izdaj {{ selectedSeatIds().length }} {{ selectedSeatIds().length === 1 ? 'kartu' : 'karte' }} (PDF)
+            </button>
           </div>
         </form>
+
+        <div class="muted small" *ngIf="selectedSeatIds().length > 0 && selectedSeatIds().length < (currentRes()?.numberOfTickets || 0)">
+          Napomena: Izabrali ste manje sedišta od rezervisanog broja; izdaće se {{ selectedSeatIds().length }} karata.
+        </div>
       </div>
 
       <div *ngIf="errIssue()" class="err mt">{{ errIssue() }}</div>
@@ -209,17 +226,24 @@ export class ReservationsPageComponent {
   maxRow = signal(0);
   maxCol = signal(0);
   flatGrid = signal<(SeatDto | null)[]>([]);
-  selectedSeatId = signal<number | null>(null);
   gridReady = signal(false);
   errIssue = signal('');
 
-  // price + seat form
+  // višestruki izbor sedišta
+  selectedSeatIds = signal<number[]>([]);
+  reachedLimit = computed(() => {
+    const limit = this.currentRes()?.numberOfTickets ?? 0;
+    return this.selectedSeatIds().length >= limit && limit > 0;
+  });
+
+  // price + seatIds form
   issueForm!: FormGroup<{
     price: FormControl<number | null>;
-    seatId: FormControl<number | null>;
+    seatIds: FormControl<number[] | null>;
   }>;
 
   constructor(){
+    // filters
     this.filters = this.fb.group({
       q: this.fb.control<string | null>(null),
       from: this.fb.control<string | null>(null),
@@ -227,9 +251,10 @@ export class ReservationsPageComponent {
       projectionId: this.fb.control<number | null>(null)
     });
 
+    // issue form (višesedišno)
     this.issueForm = this.fb.group({
       price: this.fb.control<number | null>(null, [Validators.required, Validators.min(0)]),
-      seatId: this.fb.control<number | null>(null, [Validators.required]),
+      seatIds: this.fb.control<number[] | null>(null, [Validators.required]),
     });
 
     this.load();
@@ -307,7 +332,8 @@ export class ReservationsPageComponent {
     this.currentProj.set(p || null);
 
     const base = (p as any)?.basePrice ?? 0;
-    this.issueForm.reset({ price: base, seatId: null });
+    this.issueForm.reset({ price: base, seatIds: null });
+    this.selectedSeatIds.set([]);
 
     this.loadingSeats.set(true);
     this.seatsApi.byHall(p!.hallId).subscribe({
@@ -330,11 +356,27 @@ export class ReservationsPageComponent {
     this.currentRes.set(null);
     this.currentProj.set(null);
     this.seats.set([]); this.takenTickets.set([]); this.flatGrid.set([]); this.gridReady.set(false);
-    this.selectedSeatId.set(null);
+    this.selectedSeatIds.set([]);
   }
 
   taken(seatId: number){ return this.takenTickets().some(t => t.seatId === seatId); }
-  chooseSeat(seatId: number){ this.selectedSeatId.set(seatId); this.issueForm.patchValue({ seatId }); }
+  isSelected(seatId: number){ return this.selectedSeatIds().includes(seatId); }
+
+  toggleSeat(seatId: number){
+    const limit = this.currentRes()?.numberOfTickets ?? 0;
+    const arr = [...this.selectedSeatIds()];
+    const idx = arr.indexOf(seatId);
+
+    if (idx >= 0){
+      arr.splice(idx, 1);
+    } else {
+      if (arr.length >= limit) return; // ne dozvoli više od limita
+      arr.push(seatId);
+    }
+
+    this.selectedSeatIds.set(arr);
+    this.issueForm.patchValue({ seatIds: arr.length ? arr : null });
+  }
 
   buildGrid(){
     const seats = this.seats();
@@ -356,41 +398,61 @@ export class ReservationsPageComponent {
 
   range(n: number){ return Array.from({length: n}, (_,i)=> i+1); }
 
-  // ---------- Create ticket + PDF ----------
-  async issueTicket(){
-    if (this.issueForm.invalid || !this.currentRes() || !this.currentProj()) return;
+  // ---------- Validacija UI ----------
+  priceInvalid(){ return this.issueForm.controls.price.invalid && this.issueForm.controls.price.touched; }
+  seatInvalid(){
+    const seats = this.selectedSeatIds().length;
+    const limit = this.currentRes()?.numberOfTickets ?? 0;
+    return seats === 0 || seats > limit;
+  }
+  canSubmit(){
+    return this.issueForm.controls.price.valid && !this.seatInvalid();
+  }
+
+  // ---------- Create tickets + PDFs (više komada) ----------
+  async issueTickets(){
+    if (!this.canSubmit() || !this.currentRes() || !this.currentProj()) return;
 
     this.busy.set(true); this.errIssue.set('');
     const res = this.currentRes()!;
     const p = this.currentProj()!;
     const price = Number(this.issueForm.value.price);
-    const seatId = this.issueForm.value.seatId as number;
+    const seatIds = this.selectedSeatIds();
 
-    const dto = {
-    ticketPrice: price,
-    qrCode: null,                // ← nema QR, šaljemo null
-    projectionId: p.id,
-    seatId,
-    reservationId: res.id
-    } as const;                    // tip će biti TicketCreate
+    // redund. zaštita
+    const limit = res.numberOfTickets;
+    if (seatIds.length === 0 || seatIds.length > limit){
+      this.busy.set(false);
+      this.errIssue.set(`Moraš izabrati između 1 i ${limit} sedišta.`);
+      return;
+    }
 
+    try {
+      // Izdaj jednu po jednu (da se ne sudaraju) i za svaku generiši PDF
+      for (const seatId of seatIds){
+        const dto = {
+          ticketPrice: price,
+          qrCode: null,
+          projectionId: p.id,
+          seatId,
+          reservationId: res.id
+        } as const;
 
-    this.ticketsApi.add(dto).subscribe({
-      next: async (saved) => {
-        try {
-          await this.downloadPdfTicket(saved, p);
-          this.ticketsApi.byProjection(p.id).subscribe(t => this.takenTickets.set(t ?? []));
-          this.busy.set(false);
-        } catch {
-          this.busy.set(false);
-          this.errIssue.set('Karta je sačuvana, ali PDF nije generisan.');
-        }
-      },
-      error: e => {
-        this.busy.set(false);
-        this.errIssue.set(typeof e?.error === 'string' ? e.error : 'Greška pri izdavanju karte.');
+        const saved = await firstValueFrom(this.ticketsApi.add(dto));
+        await this.downloadPdfTicket(saved, p);
       }
-    });
+
+      // Osvježi zauzeta sedišta i očisti izbor
+      const t = await firstValueFrom(this.ticketsApi.byProjection(p.id));
+      this.takenTickets.set(t ?? []);
+      this.selectedSeatIds.set([]);
+      this.issueForm.patchValue({ seatIds: null });
+
+      this.busy.set(false);
+    } catch (e: any){
+      this.busy.set(false);
+      this.errIssue.set(typeof e?.error === 'string' ? e.error : 'Greška pri izdavanju jedne ili više karata.');
+    }
   }
 
   private async downloadPdfTicket(t: TicketDto, p: ProjectionDto){

@@ -105,9 +105,7 @@ public class ReservationServis {
                 .collect(Collectors.toList());
     }
 
-    public long reservedTicketsForProjection(Long projectionId) {
-        return reservationRepository.sumTicketsForProjection(projectionId);
-    }
+
 
     // ——— Validacija ———
     private void validate(ReservationDto dto, boolean isUpdate) throws Exception {

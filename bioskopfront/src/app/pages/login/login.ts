@@ -117,7 +117,7 @@ export class LoginComponent implements OnDestroy {
       next: (res) => {
         this.auth.storeAuth(res);            
         this.loading = false;
-        this.router.navigateByUrl('/');       
+        this.router.navigateByUrl('/movies');       
       },
       error: (e) => {
         this.loading = false;

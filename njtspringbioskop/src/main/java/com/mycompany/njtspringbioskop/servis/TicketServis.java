@@ -61,9 +61,9 @@ public class TicketServis {
         }
 
         // da li je mesto već prodato za tu projekciju?
-        if (ticketRepository.existsByProjectionAndSeat(dto.getProjectionId(), dto.getSeatId())) {
+       /* if (ticketRepository.existsByProjectionAndSeat(dto.getProjectionId(), dto.getSeatId())) {
             throw new Exception("Mesto je već zauzeto (već postoji karta za projekciju i sedište).");
-        }
+        }*/
 
         // default cena = basePrice projekcije ako nije zadato
         if (dto.getTicketPrice() <= 0) {
@@ -75,9 +75,7 @@ public class TicketServis {
             dto.setQrCode(generateQr(dto));
         } else {
             // uniqueness check (uk_ticket_qrcode)
-            if (ticketRepository.findByQrCode(dto.getQrCode()) != null) {
-                throw new Exception("QR kod već postoji.");
-            }
+          
         }
 
         Ticket t = ticketMapper.toEntity(dto);
@@ -111,23 +109,7 @@ public class TicketServis {
             throw new Exception("Rezervacija nije za datu projekciju.");
         }
 
-        // ako se promeni par (projection, seat), proveri zauzeće
-        boolean projectionChanged = !existing.getProjection().getId().equals(dto.getProjectionId());
-        boolean seatChanged = !existing.getSeat().getId().equals(dto.getSeatId());
-        if ((projectionChanged || seatChanged) &&
-            ticketRepository.existsByProjectionAndSeat(dto.getProjectionId(), dto.getSeatId())) {
-            throw new Exception("Mesto je već zauzeto za datu projekciju.");
-        }
-
-        // QR handling: ako se menja, proveri jedinstvenost
-        if (dto.getQrCode() != null && !dto.getQrCode().isBlank()) {
-            Ticket other = ticketRepository.findByQrCode(dto.getQrCode());
-            if (other != null && !other.getId().equals(id)) {
-                throw new Exception("QR kod već postoji.");
-            }
-        } else if (existing.getQrCode() == null || existing.getQrCode().isBlank()) {
-            dto.setQrCode(generateQr(dto));
-        }
+ 
 
         Ticket t = ticketMapper.toEntity(dto);
         t.setProjection(em.getReference(Projection.class, dto.getProjectionId()));
@@ -142,28 +124,7 @@ public class TicketServis {
         ticketRepository.deleteById(id);
     }
 
-    // ——— Filteri ———
-
-    public TicketDto findByQrCode(String qr) throws Exception {
-        Ticket t = ticketRepository.findByQrCode(qr);
-        if (t == null) throw new Exception("Karta sa datim QR kodom ne postoji.");
-        return ticketMapper.toDto(t);
-    }
-
-    public List<TicketDto> findByProjection(Long projectionId) {
-        return ticketRepository.findByProjection(projectionId).stream()
-                .map(ticketMapper::toDto).collect(Collectors.toList());
-    }
-
-    public List<TicketDto> findByReservation(Long reservationId) {
-        return ticketRepository.findByReservation(reservationId).stream()
-                .map(ticketMapper::toDto).collect(Collectors.toList());
-    }
-
-    public List<TicketDto> findBySeat(Long seatId) {
-        return ticketRepository.findBySeat(seatId).stream()
-                .map(ticketMapper::toDto).collect(Collectors.toList());
-    }
+ 
 
     // ——— Helpers ———
     private void validate(TicketDto dto, boolean isUpdate) throws Exception {

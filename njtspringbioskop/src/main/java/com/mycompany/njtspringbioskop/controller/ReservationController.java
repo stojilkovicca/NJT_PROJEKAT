@@ -108,8 +108,5 @@ public class ReservationController {
         return new ResponseEntity<>(reservationServis.findInRange(from, to), HttpStatus.OK);
     }
 
-    @GetMapping("/projection/{projectionId}/sum-tickets")
-    public ResponseEntity<Long> sumTickets(@PathVariable Long projectionId) {
-        return new ResponseEntity<>(reservationServis.reservedTicketsForProjection(projectionId), HttpStatus.OK);
-    }
+
 }

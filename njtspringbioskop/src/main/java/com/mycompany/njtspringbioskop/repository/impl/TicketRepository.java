@@ -44,44 +44,4 @@ public class TicketRepository implements MyAppRepository<Ticket, Long> {
         if (t != null) em.remove(t);
     }
 
-    // ——— Dodatni upiti ———
-
-    public boolean existsByProjectionAndSeat(Long projectionId, Long seatId) {
-        Long cnt = em.createQuery(
-                "SELECT COUNT(t) FROM Ticket t WHERE t.projection.id = :pid AND t.seat.id = :sid",
-                Long.class
-        ).setParameter("pid", projectionId)
-         .setParameter("sid", seatId)
-         .getSingleResult();
-        return cnt != null && cnt > 0;
-    }
-
-    public Ticket findByQrCode(String qr) {
-        List<Ticket> list = em.createQuery(
-                "SELECT t FROM Ticket t WHERE t.qrCode = :qr",
-                Ticket.class
-        ).setParameter("qr", qr).setMaxResults(1).getResultList();
-        return list.isEmpty() ? null : list.get(0);
-    }
-
-    public List<Ticket> findByProjection(Long projectionId) {
-        return em.createQuery(
-                "SELECT t FROM Ticket t WHERE t.projection.id = :pid ORDER BY t.id DESC",
-                Ticket.class
-        ).setParameter("pid", projectionId).getResultList();
-    }
-
-    public List<Ticket> findByReservation(Long reservationId) {
-        return em.createQuery(
-                "SELECT t FROM Ticket t WHERE t.reservation.id = :rid ORDER BY t.id DESC",
-                Ticket.class
-        ).setParameter("rid", reservationId).getResultList();
-    }
-
-    public List<Ticket> findBySeat(Long seatId) {
-        return em.createQuery(
-                "SELECT t FROM Ticket t WHERE t.seat.id = :sid ORDER BY t.id DESC",
-                Ticket.class
-        ).setParameter("sid", seatId).getResultList();
-    }
 }

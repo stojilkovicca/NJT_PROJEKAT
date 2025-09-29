@@ -1,4 +1,4 @@
-// src/app/admin/projections-page/projections-page.ts
+
 import { Component } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';

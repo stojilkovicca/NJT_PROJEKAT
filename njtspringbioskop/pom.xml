@@ -78,11 +78,7 @@
       <version>2.2.0</version>
     </dependency>
 
-    <!-- Mail -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-mail</artifactId>
-    </dependency>
+
 
     <!-- Tomcat kao PROVIDED jer deployuješ WAR na eksterni Tomcat -->
     <dependency>

@@ -92,17 +92,7 @@ public class SeatController {
         return new ResponseEntity<>(seatServis.findByHall(hallId), HttpStatus.OK);
     }
 
-    @GetMapping("/hall/{hallId}/row/{rowNum}")
-    public ResponseEntity<List<SeatDto>> byHallAndRow(@PathVariable Long hallId, @PathVariable int rowNum) {
-        return new ResponseEntity<>(seatServis.findByHallAndRow(hallId, rowNum), HttpStatus.OK);
-    }
-
-    @GetMapping("/hall/{hallId}/search")
-    public ResponseEntity<List<SeatDto>> searchInHall(
-            @PathVariable Long hallId,
-            @RequestParam(name = "q", required = false) String q) {
-        return new ResponseEntity<>(seatServis.searchByHallAndLabel(hallId, q), HttpStatus.OK);
-    }
+ 
 
     // ——— Bulk generate (opciono) ———
     @PostMapping("/hall/{hallId}/generate")

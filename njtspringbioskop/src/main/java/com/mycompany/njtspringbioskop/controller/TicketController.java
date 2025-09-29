@@ -85,29 +85,5 @@ public class TicketController {
         }
     }
 
-    // ——— Filteri ———
-
-    @GetMapping("/projection/{projectionId}")
-    public ResponseEntity<List<TicketDto>> byProjection(@PathVariable Long projectionId) {
-        return new ResponseEntity<>(ticketServis.findByProjection(projectionId), HttpStatus.OK);
-    }
-
-    @GetMapping("/reservation/{reservationId}")
-    public ResponseEntity<List<TicketDto>> byReservation(@PathVariable Long reservationId) {
-        return new ResponseEntity<>(ticketServis.findByReservation(reservationId), HttpStatus.OK);
-    }
-
-    @GetMapping("/seat/{seatId}")
-    public ResponseEntity<List<TicketDto>> bySeat(@PathVariable Long seatId) {
-        return new ResponseEntity<>(ticketServis.findBySeat(seatId), HttpStatus.OK);
-    }
-
-    @GetMapping("/qr/{qr}")
-    public ResponseEntity<TicketDto> byQr(@PathVariable String qr) {
-        try {
-            return new ResponseEntity<>(ticketServis.findByQrCode(qr), HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
-        }
-    }
+ 
 }

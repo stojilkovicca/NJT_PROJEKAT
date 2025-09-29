@@ -89,7 +89,6 @@ export class RegisterComponent {
   loading = false;
   serverErr = '';
 
-  // ✅ strogo tipizirana forma (nema TS4111)
   form!: FormGroup<{
     username: FormControl<string>;
     email:    FormControl<string>;

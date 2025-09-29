@@ -99,15 +99,7 @@ public class SeatServis {
                 .map(seatMapper::toDto).collect(Collectors.toList());
     }
 
-    public List<SeatDto> findByHallAndRow(Long hallId, int rowNum) {
-        return seatRepository.findByHallAndRow(hallId, rowNum).stream()
-                .map(seatMapper::toDto).collect(Collectors.toList());
-    }
-
-    public List<SeatDto> searchByHallAndLabel(Long hallId, String q) {
-        return seatRepository.searchByHallAndLabel(hallId, q).stream()
-                .map(seatMapper::toDto).collect(Collectors.toList());
-    }
+   
 
     // ——— Bulk generate (opciono, korisno za inicijalno popunjavanje) ———
     @Transactional
