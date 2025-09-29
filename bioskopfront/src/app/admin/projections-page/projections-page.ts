@@ -11,46 +11,110 @@ import { HallService, HallDto } from '../../core/hall';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NgFor],
   template: `
-    <h2>Projekcije — dodavanje</h2>
+    <section class="admin">
+      <div class="card">
+        <h1>Projekcije — dodavanje</h1>
+        <p class="muted">Izaberi film i salu, zatim postavi termin i cenu.</p>
 
-    <form [formGroup]="form" (ngSubmit)="save()" class="form">
-      <label>Film
-        <select formControlName="movieId">
-          <option *ngFor="let m of movies" [value]="m.id">{{ m.title }}</option>
-        </select>
-      </label>
+        <form [formGroup]="form" (ngSubmit)="save()" class="form-grid">
+          <label>
+            Film
+            <select formControlName="movieId">
+              <option [ngValue]="null" disabled>— izaberi film —</option>
+              <option *ngFor="let m of movies" [ngValue]="m.id">{{ m.title }}</option>
+            </select>
+          </label>
 
-      <label>Sala
-        <select formControlName="hallId">
-          <option *ngFor="let h of halls" [value]="h.id">{{ h.name || ('Sala ' + h.id) }}</option>
-        </select>
-      </label>
+          <label>
+            Sala
+            <select formControlName="hallId">
+              <option [ngValue]="null" disabled>— izaberi salu —</option>
+              <option *ngFor="let h of halls" [ngValue]="h.id">{{ h.name || ('Sala ' + h.id) }}</option>
+            </select>
+          </label>
 
-      <label>Datum & vreme
-        <input type="datetime-local"
-               formControlName="localDateTime"
-               [min]="minLocal"
-               step="900" />
-      </label>
+          <label class="col-span-2">
+            Datum & vreme
+            <input type="datetime-local"
+                   formControlName="localDateTime"
+                   [min]="minLocal"
+                   step="900" />
+          </label>
 
-      <label>Osnovna cena (RSD)
-        <input type="number" formControlName="basePrice" />
-      </label>
+          <label>
+            Osnovna cena (RSD)
+            <input type="number" formControlName="basePrice" placeholder="npr. 450" />
+          </label>
 
-      <button class="btn primary" type="submit" [disabled]="form.invalid || loading">
-        {{ loading ? 'Snima...' : 'Dodaj' }}
-      </button>
-      <span class="ok" *ngIf="ok">Sačuvano.</span>
-      <span class="err" *ngIf="err">{{ err }}</span>
-    </form>
+          <div class="actions">
+            <button class="btn primary" type="submit" [disabled]="form.invalid || loading">
+              {{ loading ? 'Snima...' : 'Dodaj' }}
+            </button>
+          </div>
+
+          <div class="msg">
+            <span class="ok" *ngIf="ok">✅ Sačuvano.</span>
+            <span class="err" *ngIf="err">{{ err }}</span>
+          </div>
+        </form>
+      </div>
+    </section>
   `,
   styles: [`
-    .form{display:grid;grid-template-columns:1fr;gap:10px;max-width:520px}
-    select,input{background:#0f1117;border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px}
-    .btn{padding:8px 12px;border-radius:8px;border:1px solid transparent;cursor:pointer}
-    .btn.primary{background:#7c4dff;color:#fff}
-    .ok{color:#b7ffdd;margin-left:8px}
-    .err{color:#ffb4b4;margin-left:8px}
+    /* Layout */
+    .admin { min-height: calc(100dvh - 120px); display:grid; place-items:start center; padding:32px 20px; background:#0c0c10; }
+    .card {
+      width:100%; max-width:900px; border:1px solid rgba(255,255,255,.08);
+      background:#12131a; border-radius:16px; padding:24px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    h1{ margin:0 0 6px; color:#fff; font-size:1.6rem; }
+    .muted{ color:#9aa3b2; margin:0 0 18px; }
+
+    /* Grid */
+    .form-grid{
+      display:grid; gap:14px;
+      grid-template-columns: 1fr 1fr;
+      align-items:end;
+    }
+    .col-span-2{ grid-column: 1 / -1; }
+
+    /* Fields */
+    label{ display:flex; flex-direction:column; gap:6px; color:#cfd3dc; font-size:.95rem; }
+    select, input{
+      background:#0f1117; border:1px solid rgba(255,255,255,.1); color:#fff;
+      border-radius:12px; padding:12px; outline:none; font-size:.98rem;
+      transition: border-color .15s ease, box-shadow .15s ease, transform .05s ease;
+    }
+    select:focus, input:focus{
+      border-color:#7c4dff; box-shadow:0 0 0 3px rgba(124,77,255,.18);
+    }
+    select:hover, input:hover{ border-color: rgba(255,255,255,.18); }
+    input:active{ transform: scale(0.998); }
+    /* number look */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+    input[type=number]{ -moz-appearance:textfield; }
+
+    /* Actions & messages */
+    .actions{ display:flex; justify-content:flex-end; }
+    .btn{
+      padding:12px 18px; border-radius:12px; border:1px solid transparent; cursor:pointer;
+      background:#1a1b23; color:#e6e6e6;
+    }
+    .btn.primary{ background:#7c4dff; color:#fff; }
+    .btn.primary[disabled]{ opacity:.65; cursor:not-allowed; }
+
+    .msg{ grid-column: 1 / -1; display:flex; gap:12px; align-items:center; min-height:28px; }
+    .ok{ color:#b7ffdd; }
+    .err{ color:#ffb4b4; }
+
+    /* Responsive */
+    @media (max-width: 720px){
+      .form-grid{ grid-template-columns: 1fr; }
+      .actions{ justify-content:stretch; }
+      .btn{ width:100%; }
+    }
   `]
 })
 export class ProjectionsPageComponent {
@@ -58,7 +122,6 @@ export class ProjectionsPageComponent {
   halls: HallDto[] = [];
   loading = false; ok = false; err = '';
 
-  // koristimo "datetime-local" kontrolu; čuvamo je kao string "YYYY-MM-DDTHH:mm"
   form!: FormGroup<{
     movieId:       FormControl<number | null>;
     hallId:        FormControl<number | null>;
@@ -66,7 +129,6 @@ export class ProjectionsPageComponent {
     basePrice:     FormControl<number | null>;
   }>;
 
-  // minimalno vreme = sada (u format za input[type=datetime-local])
   minLocal = this.toLocalInputValue(new Date());
 
   constructor(
@@ -91,15 +153,12 @@ export class ProjectionsPageComponent {
     this.loading = true; this.ok = false; this.err = '';
 
     const v = this.form.getRawValue();
-
-    // "datetime-local" vraća lokalni string "YYYY-MM-DDTHH:mm"
-    // pretvaramo u ISO sa sekundama (backend LocalDateTime)
     const iso = new Date(v.localDateTime as string).toISOString().slice(0,19); // YYYY-MM-DDTHH:mm:ss
 
     const payload: Omit<ProjectionDto,'id'> = {
       movieId:   v.movieId as number,
       hallId:    v.hallId as number,
-      dateTime:  iso,          // <- backend ga mapira u LocalDateTime
+      dateTime:  iso,   // backend LocalDateTime
       basePrice: v.basePrice as number,
     } as any;
 
@@ -109,7 +168,6 @@ export class ProjectionsPageComponent {
     });
   }
 
-  // Helpers za formatiranje "datetime-local"
   private toLocalInputValue(d: Date): string {
     const pad = (n: number) => n.toString().padStart(2,'0');
     const yyyy = d.getFullYear();

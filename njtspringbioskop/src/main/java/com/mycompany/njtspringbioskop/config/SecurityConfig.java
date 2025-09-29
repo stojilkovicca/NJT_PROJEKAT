@@ -37,7 +37,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // CORS preflight
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
+                .requestMatchers("/error").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll() 
                 // Auth bez tokena
                 .requestMatchers("/api/auth/**").permitAll()
 
@@ -54,8 +55,7 @@ public class SecurityConfig {
                 // Admin može da menja (POST/PUT/DELETE) bilo šta ispod /api/**
                 .requestMatchers(HttpMethod.POST,   "/api/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT,    "/api/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-
+                .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN") 
                 // Sve ostalo zahteva prijavu
                 .anyRequest().authenticated()
             )

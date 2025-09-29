@@ -145,4 +145,9 @@ public class SeatServis {
         if (dto.getSeatNumber() < 1) throw new Exception("seatNumber mora biti >= 1.");
         if (dto.getLabel() != null && dto.getLabel().length() > 20) throw new Exception("label max 20 karaktera.");
     }
+    
+    @Transactional
+    public void deleteByHall(Long hallId) {
+        seatRepository.deleteByHall(hallId);
+    }
 }

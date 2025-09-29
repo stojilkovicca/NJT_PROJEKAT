@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
@@ -11,40 +10,122 @@ import { GenreService, GenreDto } from '../../core/genre';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NgFor],
   template: `
-    <h2>Novi film</h2>
+    <section class="admin">
+      <div class="card">
+        <h1>Novi film</h1>
+        <p class="muted">Popuni podatke i sačuvaj film u bazi.</p>
 
-    <form [formGroup]="form" (ngSubmit)="save()" class="form">
-      <label>Naslov <input formControlName="title" /></label>
-      <label>Opis <textarea formControlName="description"></textarea></label>
-      <label>Trajanje (min) <input type="number" formControlName="duration" /></label>
-      <label>IMDb <input type="number" step="0.1" formControlName="imdbRating" /></label>
-      <label>Ocena <input type="number" step="0.1" formControlName="rating" /></label>
-      <label>Producent <input formControlName="producer" /></label>
-      <label>Glumci <input formControlName="actors" /></label>
+        <form [formGroup]="form" (ngSubmit)="save()" class="form-grid">
+          <label>
+            Naslov
+            <input formControlName="title" placeholder="npr. Interstellar" />
+          </label>
 
-      <label>Žanr
-        <select formControlName="genreId">
-          <option [ngValue]="null" disabled>— izaberi žanr —</option>
-          <option *ngFor="let g of genres" [ngValue]="g.id">{{ g.name }}</option>
-        </select>
-      </label>
+          <label>
+            Trajanje (min)
+            <input type="number" formControlName="duration" placeholder="npr. 169" />
+          </label>
 
-      <div class="actions">
-        <button class="btn primary" type="submit" [disabled]="form.invalid || loading">
-          {{ loading ? 'Snima...' : 'Sačuvaj' }}
-        </button>
+          <label class="col-span-2">
+            Opis
+            <textarea formControlName="description" rows="4" placeholder="Kratak sinopsis filma..."></textarea>
+          </label>
+
+          <label>
+            IMDb
+            <input type="number" step="0.1" formControlName="imdbRating" placeholder="npr. 8.6" />
+          </label>
+
+          <label>
+            Ocena
+            <input type="number" step="0.1" formControlName="rating" placeholder="npr. 9.2" />
+          </label>
+
+          <label>
+            Producent
+            <input formControlName="producer" placeholder="npr. Emma Thomas" />
+          </label>
+
+          <label>
+            Glumci
+            <input formControlName="actors" placeholder="npr. Matthew McConaughey, Anne Hathaway" />
+          </label>
+
+          <label>
+            Žanr
+            <select formControlName="genreId">
+              <option [ngValue]="null" disabled>— izaberi žanr —</option>
+              <option *ngFor="let g of genres" [ngValue]="g.id">{{ g.name }}</option>
+            </select>
+          </label>
+
+          <div class="actions col-span-2">
+            <button class="btn primary" type="submit" [disabled]="form.invalid || loading">
+              {{ loading ? 'Snima...' : 'Sačuvaj' }}
+            </button>
+          </div>
+
+          <p class="err col-span-2" *ngIf="err">{{ err }}</p>
+        </form>
       </div>
-
-      <p class="err" *ngIf="err">{{ err }}</p>
-    </form>
+    </section>
   `,
   styles: [`
-    .form{display:grid;grid-template-columns:1fr;gap:10px;max-width:560px}
-    input,textarea,select{background:#0f1117;border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px}
-    .actions{margin-top:8px}
-    .btn{padding:8px 12px;border-radius:8px;border:1px solid transparent;cursor:pointer}
-    .btn.primary{background:#7c4dff;color:#fff}
-    .err{color:#ffb4b4}
+    /* Layout */
+    .admin { min-height: calc(100dvh - 120px); display:grid; place-items:start center; padding:32px 20px; background:#0c0c10; }
+    .card {
+      width:100%; max-width:900px; border:1px solid rgba(255,255,255,.08);
+      background:#12131a; border-radius:16px; padding:24px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+
+    h1{ margin:0 0 6px; color:#fff; font-size:1.6rem; }
+    .muted{ color:#9aa3b2; margin:0 0 18px; }
+
+    /* Grid */
+    .form-grid{
+      display:grid; gap:14px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .col-span-2{ grid-column: 1 / -1; }
+
+    /* Fields */
+    label{ display:flex; flex-direction:column; gap:6px; color:#cfd3dc; font-size:.95rem; }
+    input, textarea, select{
+      background:#0f1117; border:1px solid rgba(255,255,255,.1); color:#fff;
+      border-radius:12px; padding:12px; outline:none; font-size:.98rem;
+      transition: border-color .15s ease, box-shadow .15s ease, transform .05s ease;
+    }
+    textarea{ resize:vertical; min-height:96px; }
+    input:focus, textarea:focus, select:focus{
+      border-color:#7c4dff; box-shadow:0 0 0 3px rgba(124,77,255,.18);
+    }
+    input:hover, textarea:hover, select:hover{ border-color: rgba(255,255,255,.18); }
+    input:active{ transform: scale(0.998); }
+
+    /* Number inputs clean look */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+    input[type=number]{ -moz-appearance:textfield; }
+
+    /* Actions */
+    .actions{ display:flex; justify-content:flex-end; margin-top:6px; }
+    .btn{
+      padding:12px 18px; border-radius:12px; border:1px solid transparent; cursor:pointer;
+      background:#1a1b23; color:#e6e6e6;
+    }
+    .btn.primary{ background:#7c4dff; color:#fff; }
+    .btn.primary[disabled]{ opacity:.65; cursor:not-allowed; }
+
+    /* Errors */
+    .err{ color:#ffb4b4; font-size:.92rem; }
+
+    /* Responsive */
+    @media (max-width: 720px){
+      .form-grid{ grid-template-columns: 1fr; }
+      .actions{ justify-content:stretch; }
+      .btn{ width:100%; }
+    }
   `]
 })
 export class MovieFormComponent {
@@ -52,7 +133,6 @@ export class MovieFormComponent {
   err = '';
   genres: GenreDto[] = [];
 
-  // 1) Samo DEKLARIŠEMO formu ovde…
   form!: FormGroup<{
     title:       FormControl<string>;
     description: FormControl<string | null>;
@@ -70,7 +150,6 @@ export class MovieFormComponent {
     private genresApi: GenreService,
     private router: Router
   ){
-    // 2) …a PRAVIMO je u konstruktoru (posle što je fb “ubrizgan”)
     this.form = this.fb.group({
       title:       this.fb.nonNullable.control('', Validators.required),
       description: this.fb.control<string | null>(null),
@@ -104,7 +183,6 @@ export class MovieFormComponent {
     this.loading = true; this.err = '';
 
     const payload = this.toPayload();
-
     this.api.create(payload).subscribe({
       next: () => this.router.navigateByUrl('/admin/movies'),
       error: e => {

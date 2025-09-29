@@ -119,4 +119,10 @@ public class SeatController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error while generating seats: " + ex.getMessage());
         }
     }
+    
+    @DeleteMapping("/hall/{hallId}")
+    public ResponseEntity<String> clearHall(@PathVariable Long hallId) {
+        seatServis.deleteByHall(hallId);
+        return ResponseEntity.ok("Seats cleared for hall " + hallId);
+    }
 }

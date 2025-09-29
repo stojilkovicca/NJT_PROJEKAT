@@ -83,4 +83,10 @@ public class SeatRepository implements MyAppRepository<Seat, Long> {
          .setParameter("q", q == null ? "" : q)
          .getResultList();
     }
+    @Transactional
+    public void deleteByHall(Long hallId) {
+        em.createQuery(
+            "DELETE FROM Seat s WHERE s.hall.id = :hid"
+        ).setParameter("hid", hallId).executeUpdate();
+    }
 }
