@@ -49,7 +49,7 @@ public class GenreRepository implements MyAppRepository<Genre, Long> {
         if (g != null) entityManager.remove(g);
     }
 
-    // Dodatno (nije deo MyAppRepository interfejsa, ali možeš koristiti iz servisa):
+   
     public boolean existsByNameIgnoreCase(String name) {
         Long cnt = entityManager.createQuery(
                 "SELECT COUNT(g) FROM Genre g WHERE LOWER(g.name) = LOWER(:name)", Long.class)

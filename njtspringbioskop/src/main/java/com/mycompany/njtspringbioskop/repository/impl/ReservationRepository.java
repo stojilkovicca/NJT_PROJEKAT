@@ -64,7 +64,8 @@ public class ReservationRepository implements MyAppRepository<Reservation, Long>
 
     public List<Reservation> findInRange(LocalDateTime from, LocalDateTime to) {
         return em.createQuery(
-                "SELECT r FROM Reservation r WHERE r.reservedAt BETWEEN :from AND :to ORDER BY r.reservedAt DESC",
+                "SELECT r FROM Reservation r WHERE r.reservedAt "
+                        + "BETWEEN :from AND :to ORDER BY r.reservedAt DESC",
                 Reservation.class
         ).setParameter("from", from)
          .setParameter("to", to)

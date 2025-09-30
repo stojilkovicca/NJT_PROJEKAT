@@ -75,7 +75,8 @@ public class HallRepository implements MyAppRepository<Hall, Long> {
  
     public List<Seat> findSeatsByHall(Long hallId) {
         return entityManager.createQuery(
-                "SELECT s FROM Seat s WHERE s.hall.id = :hid ORDER BY s.rowNumber, s.seatNumber",
+                "SELECT s FROM Seat s WHERE s.hall.id = :hid"
+                        + " ORDER BY s.rowNumber, s.seatNumber",
                 Seat.class)
             .setParameter("hid", hallId)
             .getResultList();

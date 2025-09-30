@@ -31,7 +31,7 @@ public class Movie {
     private String producer;
 
     @Column(length = 500)
-    private String actors;         // jednostavno: csv; za naprednije -> posebna tabela
+    private String actors;      
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id", nullable = false)

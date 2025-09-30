@@ -39,7 +39,7 @@ public class GenreServis {
     }
 
     public GenreDto create(GenreDto dto) {
-        // opciono: provera duplikata po nazivu
+      
         if (dto.getName() != null && genreRepository.existsByNameIgnoreCase(dto.getName())) {
             throw new RuntimeException("Žanr sa datim nazivom već postoji: " + dto.getName());
         }
@@ -49,7 +49,7 @@ public class GenreServis {
     }
 
     public GenreDto update(GenreDto dto) {
-        // isti stil kao kod RestaurantServis: direktno merge preko save()
+      
         Genre updated = genreMapper.toEntity(dto);
         genreRepository.save(updated);
         return genreMapper.toDto(updated);

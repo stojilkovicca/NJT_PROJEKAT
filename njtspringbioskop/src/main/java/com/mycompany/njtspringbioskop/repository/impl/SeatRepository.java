@@ -60,29 +60,13 @@ public class SeatRepository implements MyAppRepository<Seat, Long> {
 
     public List<Seat> findByHall(Long hallId) {
         return em.createQuery(
-                "SELECT s FROM Seat s WHERE s.hall.id = :hid ORDER BY s.rowNumber, s.seatNumber",
+                "SELECT s FROM Seat s WHERE s.hall.id = :hid "
+                        + " ORDER BY s.rowNumber, s.seatNumber",
                 Seat.class
         ).setParameter("hid", hallId).getResultList();
     }
 
-    public List<Seat> findByHallAndRow(Long hallId, int rowNum) {
-        return em.createQuery(
-                "SELECT s FROM Seat s WHERE s.hall.id = :hid AND s.rowNumber = :r ORDER BY s.seatNumber",
-                Seat.class
-        ).setParameter("hid", hallId)
-         .setParameter("r", rowNum)
-         .getResultList();
-    }
 
-    public List<Seat> searchByHallAndLabel(Long hallId, String q) {
-        return em.createQuery(
-                "SELECT s FROM Seat s WHERE s.hall.id = :hid AND LOWER(s.label) LIKE LOWER(CONCAT('%', :q, '%')) " +
-                "ORDER BY s.rowNumber, s.seatNumber",
-                Seat.class
-        ).setParameter("hid", hallId)
-         .setParameter("q", q == null ? "" : q)
-         .getResultList();
-    }
     @Transactional
     public void deleteByHall(Long hallId) {
         em.createQuery(

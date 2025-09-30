@@ -6,8 +6,8 @@ import { ProjectionService, ProjectionDto } from '../../core/projection';
 import { SeatService, SeatDto } from '../../core/seat';
 import { HallService, HallDto } from '../../core/hall';
 import { MovieService, MovieDto } from '../../core/movie';
-import jsPDF from 'jspdf';
 import { TicketDto, TicketService } from '../../core/ticket';
+import jsPDF from 'jspdf';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -23,14 +23,17 @@ import { firstValueFrom } from 'rxjs';
         <!-- FILTERI -->
         <form [formGroup]="filters" (ngSubmit)="applyFilters()" class="filters">
           <input formControlName="q" placeholder="Pretraga (korisnik, film...)" />
+
           <label class="dates">
             Od
             <input type="datetime-local" formControlName="from"/>
           </label>
+
           <label class="dates">
             Do
             <input type="datetime-local" formControlName="to"/>
           </label>
+
           <label>
             Projekcija
             <select formControlName="projectionId">
@@ -40,8 +43,11 @@ import { firstValueFrom } from 'rxjs';
               </option>
             </select>
           </label>
-          <button class="btn">Primeni</button>
-          <button type="button" class="btn" (click)="resetFilters()">Reset</button>
+
+          <div class="filters-actions">
+            <button class="btn primary" type="submit">Primeni</button>
+            <button type="button" class="btn ghost" (click)="resetFilters()">Reset</button>
+          </div>
         </form>
 
         <!-- LISTA -->
@@ -53,17 +59,24 @@ import { firstValueFrom } from 'rxjs';
           <div>Rezervisano</div>
           <div>Akcije</div>
         </div>
+
         <ul class="list">
           <li *ngFor="let r of filtered()" class="row">
-            <div>#{{r.id}}</div>
-            <div>{{ userName(r.userId) }}</div>
+            <div>#{{ r.id }}</div>
+
+            <div class="user-col">
+              <div class="u-name">user: {{ r.userId }}</div>
+            </div>
+
             <div>
               #{{ r.projectionId }}
               <span class="muted">— {{ movieTitle(projection(r.projectionId)?.movieId) }}</span>
               <div class="muted small">{{ dateLabel(projection(r.projectionId)?.dateTime) }}</div>
             </div>
+
             <div>{{ r.numberOfTickets }}</div>
             <div>{{ dateTimeLocal(r.reservedAt) }}</div>
+
             <div class="actions sm">
               <button class="btn" (click)="openIssueModal(r)" [disabled]="busy()">Izdaj kartu</button>
               <button class="btn danger" (click)="deleteReservation(r)" [disabled]="busy()">Obriši</button>
@@ -151,19 +164,31 @@ import { firstValueFrom } from 'rxjs';
     h1{ margin:0 0 6px; color:#fff; font-size:1.6rem; }
     .muted{ color:#9aa3b2; } .small{ font-size:.92rem; }
 
-    .filters{ display:grid; gap:10px; grid-template-columns: 1.2fr .9fr .9fr 1.4fr auto auto; margin:10px 0 16px; }
-    .filters input, .filters select{ background:#0f1117; border:1px solid rgba(255,255,255,.1); color:#fff; border-radius:10px; padding:10px; }
+    .filters{
+      display:grid; gap:10px;
+      grid-template-columns: 1.4fr 1fr 1fr 1.6fr auto;
+      align-items:end; margin:10px 0 16px;
+    }
+    .filters input, .filters select{
+      background:#0f1117; border:1px solid rgba(255,255,255,.1); color:#fff;
+      border-radius:10px; padding:10px; height:42px;
+    }
     .dates{ display:flex; gap:6px; align-items:center; color:#cfd3dc; }
+    .filters-actions{ display:flex; gap:10px; }
+    .filters .btn{ height:42px; padding:0 16px; display:inline-flex; align-items:center; justify-content:center; }
+    .btn{ padding:10px 14px; border-radius:10px; border:1px solid transparent; cursor:pointer; background:#1a1b23; color:#e6e6e6; }
+    .btn.primary{ background:#7c4dff; color:#fff; }
+    .btn.ghost{ background:transparent; border:1px solid rgba(255,255,255,.18); color:#cfd3dc; }
+    .btn.danger{ background:#2a1518; border-color:rgba(255,0,0,.25); color:#ffb4b4; }
 
-    .list-head, .list .row{ display:grid; grid-template-columns: 80px 1fr 2fr 120px 200px 220px; gap:10px; align-items:center; }
+    .list-head, .list .row{ display:grid; grid-template-columns: 80px 1.6fr 2.2fr 120px 200px 220px; gap:10px; align-items:center; }
     .list-head{ color:#9aa3b2; padding:6px 0; border-bottom:1px solid rgba(255,255,255,.08); margin-top:6px; }
     .list{ list-style:none; padding:0; margin:0; }
     .list .row{ padding:10px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+    .u-name{ color:#e9ecf1; font-weight:600; }
+
     .actions{ display:flex; gap:10px; }
     .actions.sm{ gap:8px; }
-    .btn{ padding:10px 14px; border-radius:10px; border:1px solid transparent; cursor:pointer; background:#1a1b23; color:#e6e6e6; }
-    .btn.primary{ background:#7c4dff; color:#fff; }
-    .btn.danger{ background:#2a1518; border-color:rgba(255,0,0,.25); color:#ffb4b4; }
     .err{ color:#ffb4b4; }
 
     .modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.6); }
@@ -173,7 +198,7 @@ import { firstValueFrom } from 'rxjs';
     .meta{ display:flex; gap:16px; margin:6px 0 12px; color:#cfd3dc; }
 
     .issue-form{ display:grid; gap:10px; }
-    .issue-form input{ background:#0f1117; border:1px solid rgba(255,255,255,.1); color:#fff; border-radius:10px; padding:10px; }
+    .issue-form input{ background:#0f1117; border:1px solid rgba(255,255,255,.1); color:#fff; border-radius:10px; padding:10px; height:42px; }
 
     .seat-wrap{ display:grid; grid-template-columns: auto 1fr; gap:10px; align-items:start; }
     .row-labels{ display:grid; gap:6px; }
@@ -185,9 +210,9 @@ import { firstValueFrom } from 'rxjs';
     .seat.sel{ border-color:#7c4dff; box-shadow:0 0 0 3px rgba(124,77,255,.18); }
 
     @media (max-width: 980px){
-      .list-head, .list .row{ grid-template-columns: 60px 1fr 1.7fr 90px 160px 200px; }
+      .list-head, .list .row{ grid-template-columns: 60px 1.4fr 1.9fr 90px 160px 200px; }
       .seat-grid{ grid-template-columns: repeat(var(--cols), minmax(36px, 1fr)); }
-      .filters{ grid-template-columns: 1fr 1fr 1fr 1fr auto auto; }
+      .filters{ grid-template-columns: 1fr 1fr 1fr 1fr auto; }
     }
   `]
 })
@@ -200,7 +225,6 @@ export class ReservationsPageComponent {
   private hallsApi = inject(HallService);
   private moviesApi = inject(MovieService);
 
-  // data
   reservations = signal<ReservationDto[]>([]);
   projections = signal<ProjectionDto[]>([]);
   movies = signal<MovieDto[]>([]);
@@ -208,7 +232,6 @@ export class ReservationsPageComponent {
   err = signal<string>('');
   busy = signal<boolean>(false);
 
-  // filters
   filters!: FormGroup<{
     q: FormControl<string | null>;
     from: FormControl<string | null>;
@@ -216,7 +239,6 @@ export class ReservationsPageComponent {
     projectionId: FormControl<number | null>;
   }>;
 
-  // issue modal state
   issueOpen = signal(false);
   currentRes = signal<ReservationDto | null>(null);
   currentProj = signal<ProjectionDto | null>(null);
@@ -229,21 +251,18 @@ export class ReservationsPageComponent {
   gridReady = signal(false);
   errIssue = signal('');
 
-  // višestruki izbor sedišta
   selectedSeatIds = signal<number[]>([]);
   reachedLimit = computed(() => {
     const limit = this.currentRes()?.numberOfTickets ?? 0;
     return this.selectedSeatIds().length >= limit && limit > 0;
   });
 
-  // price + seatIds form
   issueForm!: FormGroup<{
     price: FormControl<number | null>;
     seatIds: FormControl<number[] | null>;
   }>;
 
   constructor(){
-    // filters
     this.filters = this.fb.group({
       q: this.fb.control<string | null>(null),
       from: this.fb.control<string | null>(null),
@@ -251,7 +270,6 @@ export class ReservationsPageComponent {
       projectionId: this.fb.control<number | null>(null)
     });
 
-    // issue form (višesedišno)
     this.issueForm = this.fb.group({
       price: this.fb.control<number | null>(null, [Validators.required, Validators.min(0)]),
       seatIds: this.fb.control<number[] | null>(null, [Validators.required]),
@@ -260,7 +278,6 @@ export class ReservationsPageComponent {
     this.load();
   }
 
-  // ---------- LOAD ----------
   load(){
     this.err.set('');
     this.reservationsApi.getAll().subscribe({
@@ -272,7 +289,6 @@ export class ReservationsPageComponent {
     this.hallsApi.getAll().subscribe(h => this.halls.set(h ?? []));
   }
 
-  // ---------- Helpers ----------
   projection(id?: number | null){ return this.projections().find(p => p.id === id!); }
   movieTitle(movieId?: number | null){
     return this.movies().find(m => m.id === movieId!)?.title || '—';
@@ -290,7 +306,6 @@ export class ReservationsPageComponent {
     return `${d.toLocaleDateString()} ${d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
   }
 
-  // ---------- Filter ----------
   applyFilters(){ /* computed handles it */ }
   resetFilters(){ this.filters.reset({ q: null, from: null, to: null, projectionId: null }); }
 
@@ -312,7 +327,7 @@ export class ReservationsPageComponent {
       if (q) {
         const p = this.projection(r.projectionId);
         const movie = p ? this.movieTitle(p.movieId) : '';
-        const user = this.userName(r.userId);
+        const user = `user:${r.userId}`;
         const idtxt = `#${r.id}`;
         const hay = `${user} ${movie} ${idtxt}`.toLowerCase();
         if (!hay.includes(q)) return false;
@@ -321,9 +336,6 @@ export class ReservationsPageComponent {
     });
   });
 
-  userName(userId: number){ return `user:${userId}`; }
-
-  // ---------- Issue flow ----------
   openIssueModal(r: ReservationDto){
     this.errIssue.set('');
     this.issueOpen.set(true);
@@ -370,7 +382,7 @@ export class ReservationsPageComponent {
     if (idx >= 0){
       arr.splice(idx, 1);
     } else {
-      if (arr.length >= limit) return; // ne dozvoli više od limita
+      if (arr.length >= limit) return;
       arr.push(seatId);
     }
 
@@ -398,7 +410,6 @@ export class ReservationsPageComponent {
 
   range(n: number){ return Array.from({length: n}, (_,i)=> i+1); }
 
-  // ---------- Validacija UI ----------
   priceInvalid(){ return this.issueForm.controls.price.invalid && this.issueForm.controls.price.touched; }
   seatInvalid(){
     const seats = this.selectedSeatIds().length;
@@ -409,7 +420,6 @@ export class ReservationsPageComponent {
     return this.issueForm.controls.price.valid && !this.seatInvalid();
   }
 
-  // ---------- Create tickets + PDFs (više komada) ----------
   async issueTickets(){
     if (!this.canSubmit() || !this.currentRes() || !this.currentProj()) return;
 
@@ -419,7 +429,6 @@ export class ReservationsPageComponent {
     const price = Number(this.issueForm.value.price);
     const seatIds = this.selectedSeatIds();
 
-    // redund. zaštita
     const limit = res.numberOfTickets;
     if (seatIds.length === 0 || seatIds.length > limit){
       this.busy.set(false);
@@ -428,7 +437,6 @@ export class ReservationsPageComponent {
     }
 
     try {
-      // Izdaj jednu po jednu (da se ne sudaraju) i za svaku generiši PDF
       for (const seatId of seatIds){
         const dto = {
           ticketPrice: price,
@@ -442,7 +450,6 @@ export class ReservationsPageComponent {
         await this.downloadPdfTicket(saved, p);
       }
 
-      // Osvježi zauzeta sedišta i očisti izbor
       const t = await firstValueFrom(this.ticketsApi.byProjection(p.id));
       this.takenTickets.set(t ?? []);
       this.selectedSeatIds.set([]);
@@ -451,31 +458,67 @@ export class ReservationsPageComponent {
       this.busy.set(false);
     } catch (e: any){
       this.busy.set(false);
-      this.errIssue.set(typeof e?.error === 'string' ? e.error : 'Greška pri izdavanju jedne ili više karata.');
+      this.errIssue.set(typeof e?.error === 'string' ? e.error : '');
     }
   }
 
+  // kompaktna, “card” karta 85x140mm
   private async downloadPdfTicket(t: TicketDto, p: ProjectionDto){
     const seat = this.seats().find(s => s.id === t.seatId);
 
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('Karta za projekciju', 14, 18);
+    const doc = new jsPDF({ unit: 'mm', format: [85, 140], orientation: 'portrait' });
+    const brand = { r: 124, g: 77, b: 255 };
+    const text = { r: 20, g: 22, b: 28 };
 
-    doc.setFontSize(12);
-    const y0 = 28;
-    doc.text(`Karta ID: ${t.id}`, 14, y0);
-    doc.text(`Projekcija: #${p.id}`, 14, y0+7);
-    doc.text(`Film: ${this.movieTitle(p.movieId)}`, 14, y0+14);
-    doc.text(`Sala: ${this.hall(p.hallId)?.name}`, 14, y0+21);
-    doc.text(`Termin: ${this.dateLabel(p.dateTime)}`, 14, y0+28);
-    doc.text(`Mesto: ${seat?.label || ('ID ' + t.seatId)}`, 14, y0+35);
-    doc.text(`Cena: ${t.ticketPrice.toFixed(2)} RSD`, 14, y0+42);
+    doc.setDrawColor(brand.r, brand.g, brand.b);
+    doc.setLineWidth(0.6);
+    doc.roundedRect(6, 6, 85-12, 140-12, 4, 4);
+
+    doc.setTextColor(brand.r, brand.g, brand.b);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.text('BIOSKOP — KARTA', 42.5, 18, { align: 'center' });
+
+    doc.setDrawColor(brand.r, brand.g, brand.b);
+    doc.line(14, 24, 85-14, 24);
+
+    doc.setTextColor(text.r, text.g, text.b);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+
+    const y0 = 32;
+    const line = 7;
+
+    doc.setFont('helvetica', 'bold'); doc.text('Film:', 14, y0);
+    doc.setFont('helvetica', 'normal'); doc.text(this.movieTitle(p.movieId), 34, y0, { maxWidth: 85-48 });
+
+    doc.setFont('helvetica', 'bold'); doc.text('Projekcija:', 14, y0 + line);
+    doc.setFont('helvetica', 'normal'); doc.text(`#${p.id} · ${this.dateLabel(p.dateTime)}`, 34, y0 + line);
+
+    doc.setFont('helvetica', 'bold'); doc.text('Sala:', 14, y0 + 2*line);
+    doc.setFont('helvetica', 'normal'); doc.text(`${this.hall(p.hallId)?.name ?? '-'}`, 34, y0 + 2*line);
+
+    doc.setFont('helvetica', 'bold'); doc.text('Mesto:', 14, y0 + 3*line);
+    doc.setFont('helvetica', 'normal'); doc.text(`${seat?.label || ('ID ' + t.seatId)}`, 34, y0 + 3*line);
+
+    doc.setFont('helvetica', 'bold'); doc.text('Cena:', 14, y0 + 4*line);
+    doc.setFont('helvetica', 'normal'); doc.text(`${t.ticketPrice.toFixed(2)} RSD`, 34, y0 + 4*line);
+
+    doc.setDrawColor(brand.r, brand.g, brand.b);
+    doc.setFillColor(brand.r, brand.g, brand.b);
+    doc.roundedRect(14, y0 + 5*line + 3, 57, 10, 3, 3, 'FD');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`KARTA #${t.id}`, 42.5, y0 + 5*line + 10, { align: 'center' });
+
+    doc.setTextColor(120,120,125);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.text('Molimo dodjite 15 min ranije. Zadržavamo pravo provere identiteta.', 42.5, 140-14, { align: 'center', maxWidth: 85-20 });
 
     doc.save(`karta-${t.id}.pdf`);
   }
 
-  // ---------- Actions ----------
   deleteReservation(r: ReservationDto){
     if (!confirm(`Obrisati rezervaciju #${r.id}?`)) return;
     this.busy.set(true); this.err.set('');

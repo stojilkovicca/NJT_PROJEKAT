@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgFor } from '@angular/common';
 import { NavbarComponent } from '../../shared/navbar/navbar';
 import { FooterComponent } from '../../shared/footer/footer';
 import { MovieCardComponent } from '../movies/movie-card/movie-card';
-import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [NavbarComponent, FooterComponent, MovieCardComponent, NgFor],
   template: `
-    <app-navbar></app-navbar>
+    
 
     <section class="hero">
       <div class="container">
@@ -17,21 +18,24 @@ import { NgFor } from '@angular/common';
           <h1>Dobrodošli u Bioskop</h1>
           <p>Najbolji filmovi, besprekoran zvuk i najudobnija sedišta u gradu.
              Rezervišite karte online i preskočite red.</p>
+
           <div class="cta">
-            <button class="btn primary">Pogledaj repertoar</button>
-            <button class="btn ghost">Akcije i popusti</button>
+            <button class="btn primary" (click)="goToMoviesOrLogin()">Pogledaj repertoar</button>
+            <button class="btn ghost" (click)="goToMoviesOrLogin()">Akcije i popusti</button>
           </div>
+
           <ul class="badges">
             <li>🍿 IMAX zvuk</li>
             <li>🎟️ Online rezervacije</li>
             <li>🕘 Late-night projekcije</li>
           </ul>
         </div>
+
         <div class="side-card">
           <div class="glass">
             <h3>Večeras u ponudi</h3>
             <p>Specijalne projekcije sa 20% popusta za studente.</p>
-            <button class="btn white">Rezerviši sada</button>
+            <button class="btn white" (click)="goToMoviesOrLogin()">Rezerviši sada</button>
           </div>
         </div>
       </div>
@@ -41,11 +45,15 @@ import { NgFor } from '@angular/common';
       <div class="container">
         <div class="section-head">
           <h2>Top filmovi</h2>
-          <a class="more" href="#">Vidi sve →</a>
+          <a class="more" (click)="goToMoviesOrLogin()" href="javascript:void(0)">Vidi sve →</a>
         </div>
+
         <div class="cards">
           <app-movie-card *ngFor="let m of topMovies"
-            [title]="m.title" [genre]="m.genre" [poster]="m.poster" [rating]="m.rating">
+            [title]="m.title"
+            [genre]="m.genre"
+            [poster]="m.poster"
+            [rating]="m.rating">
           </app-movie-card>
         </div>
       </div>
@@ -71,16 +79,11 @@ import { NgFor } from '@angular/common';
     .grid { padding:10px 0 64px; }
     .section-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
     .section-head h2 { margin:0; font-size:1.4rem; }
-    .more { color:#98a1b3; text-decoration:none; }
+    .more { color:#98a1b3; text-decoration:none; cursor:pointer; }
     .more:hover { color:#fff; }
-     .cards{
-    display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* svi stubci ~isti */
-    gap:16px;
-    align-items: stretch;   /* rastegni sve kartice po visini */
-  }
-  @media (max-width:900px){ .cards{ grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width:560px){ .cards{ grid-template-columns: 1fr; } }
+    .cards{ display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:16px; align-items:stretch; }
+    @media (max-width:900px){ .cards{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width:560px){ .cards{ grid-template-columns: 1fr; } }
   `]
 })
 export class HomeComponent {
@@ -88,6 +91,19 @@ export class HomeComponent {
     { title: 'Dune: Part Two', genre: 'SF, Avantura', rating: 8.7, poster: 'https://s3.amazonaws.com/nightjarprod/content/uploads/sites/261/2023/12/17144929/cBDoFHJVcZqAonkTyhN9sMEggi5-1-scaled.jpg' },
     { title: 'Oppenheimer', genre: 'Drama, Biografija', rating: 8.6, poster: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/Oppenheimer_%28film%29.jpg/250px-Oppenheimer_%28film%29.jpg' },
     { title: 'Inside Out 2', genre: 'Animirani', rating: 8.1, poster: 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Inside_Out_2_poster.jpg/250px-Inside_Out_2_poster.jpg' },
- 
   ];
+
+  constructor(private router: Router) {}
+
+  /** Minimalna provera prijave – koristi token u Local/Session Storage.
+   *  Ako imaš svoj AuthService, ovde pozovi npr. this.auth.isLoggedIn(). */
+  private isLoggedIn(): boolean {
+    const t = localStorage.getItem('token') ?? sessionStorage.getItem('token');
+    return !!t && t.trim().length > 0;
+  }
+
+  /** Vodi na /movies ako je prijavljen, inače na /login */
+  goToMoviesOrLogin(): void {
+    this.router.navigate([ this.isLoggedIn() ? '/movies' : '/login' ]);
+  }
 }

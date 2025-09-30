@@ -1,4 +1,4 @@
-// src/main/java/com/mycompany/njtspringbioskop/config/SecurityConfig.java
+
 package com.mycompany.njtspringbioskop.config;
 
 import com.mycompany.njtspringbioskop.security.JwtAuthFilter;
@@ -29,40 +29,63 @@ public class SecurityConfig {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http
+            .csrf(csrf -> csrf.disable())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // CORS preflight
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/error").permitAll()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll() 
-                // Auth bez tokena
-                .requestMatchers("/api/auth/**").permitAll()
+                .anyRequest().permitAll()   // <<< SVE JAVNO
+            );
 
-                // Javni GET-ovi (OBAVEZNO singular nazivi kako su kontroleri)
-                .requestMatchers(HttpMethod.GET,
-                        "/api/movie/**",
-                        "/api/projection/**",
-                        "/api/hall/**",
-                        "/api/seat/**",
-                        "/api/ticket/**",
-                        "/api/genre/**"
-                ).permitAll()
-
-                // Admin može da menja (POST/PUT/DELETE) bilo šta ispod /api/**
-                .requestMatchers(HttpMethod.POST,   "/api/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT,    "/api/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN") 
-                // Sve ostalo zahteva prijavu
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
+        // Ne dodajemo JwtAuthFilter niti bilo kakve auth filtere
         return http.build();
     }
+    
+    /*
+@Bean
+SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable())
+        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth
+            // preflight, error, swagger, auth
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            .requestMatchers("/error").permitAll()
+            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/reservation/**").permitAll()
+            // javni GET-ovi
+            .requestMatchers(HttpMethod.GET,
+                    "/api/movie/**",
+                    "/api/projection/**",
+                    "/api/hall/**",
+                    "/api/seat/**",
+                    "/api/ticket/**",
+                    "/api/genre/**"
+            ).permitAll()
+
+            // --- REZERVACIJE (specifična pravila) ---
+            // kreiranje rezervacije: USER ili ADMIN
+            .requestMatchers(HttpMethod.POST, "/api/reservation/**")
+                .hasAnyRole("USER","ADMIN")
+            // pregled sopstvenih rezervacija: USER ili ADMIN
+            .requestMatchers(HttpMethod.GET, "/api/reservation/user/**")
+                .hasAnyRole("USER","ADMIN")
+            // sve ostale GET/PUT/DELETE nad rezervacijama – samo ADMIN
+            .requestMatchers("/api/reservation/**").hasRole("ADMIN")
+
+            // --- GENERIČNA ADMIN PRAVILA (ostaju na dnu) ---
+            .requestMatchers(HttpMethod.POST,   "/api/**").hasAuthority("ADMIN")
+            .requestMatchers(HttpMethod.PUT,    "/api/**").hasAuthority("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/**").hasAuthority("ADMIN")
+
+            // sve ostalo traži prijavu
+            .anyRequest().authenticated()
+        )
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+}*/
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration cfg) throws Exception {
