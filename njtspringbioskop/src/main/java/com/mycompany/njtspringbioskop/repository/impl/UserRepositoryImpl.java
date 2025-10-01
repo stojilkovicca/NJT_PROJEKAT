@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.njtspringbioskop.repository.impl;
- 
 
 import com.mycompany.njtspringbioskop.entity.impl.User;
 import com.mycompany.njtspringbioskop.repository.UserRepository;
@@ -30,9 +25,9 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<User> findByUsername(String username) {
         try {
             User u = em.createQuery(
-                    "SELECT u FROM User u WHERE u.username = :username", User.class)
-                    .setParameter("username", username)
-                    .getSingleResult();
+                "SELECT u FROM User u WHERE u.username = :username", User.class)
+                .setParameter("username", username)
+                .getSingleResult();
             return Optional.of(u);
         } catch (NoResultException ex) {
             return Optional.empty();
@@ -42,19 +37,47 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean existsByUsername(String username) {
         Long cnt = em.createQuery(
-                "SELECT COUNT(u) FROM User u WHERE u.username = :username", Long.class)
-                .setParameter("username", username)
-                .getSingleResult();
+            "SELECT COUNT(u) FROM User u WHERE u.username = :username", Long.class)
+            .setParameter("username", username)
+            .getSingleResult();
         return cnt != null && cnt > 0;
     }
 
     @Override
     public boolean existsByEmail(String email) {
         Long cnt = em.createQuery(
-                "SELECT COUNT(u) FROM User u WHERE u.email = :email", Long.class)
+            "SELECT COUNT(u) FROM User u WHERE u.email = :email", Long.class)
+            .setParameter("email", email)
+            .getSingleResult();
+        return cnt != null && cnt > 0;
+    }
+
+    // NOVO: findByEmail
+    @Override
+    public Optional<User> findByEmail(String email) {
+        try {
+            User u = em.createQuery(
+                "SELECT u FROM User u WHERE u.email = :email", User.class)
                 .setParameter("email", email)
                 .getSingleResult();
-        return cnt != null && cnt > 0;
+            return Optional.of(u);
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
+    }
+
+    // NOVO: findByVerificationToken
+    @Override
+    public Optional<User> findByVerificationToken(String token) {
+        try {
+            User u = em.createQuery(
+                "SELECT u FROM User u WHERE u.verificationToken = :t", User.class)
+                .setParameter("t", token)
+                .getSingleResult();
+            return Optional.of(u);
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -62,7 +85,7 @@ public class UserRepositoryImpl implements UserRepository {
     public User save(User user) {
         if (user.getId() == null) {
             em.persist(user);
-            return user; // em će setovati ID nakon flush-a
+            return user;
         } else {
             return em.merge(user);
         }

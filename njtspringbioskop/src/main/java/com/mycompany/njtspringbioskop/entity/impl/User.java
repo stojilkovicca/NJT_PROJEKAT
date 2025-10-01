@@ -2,6 +2,7 @@ package com.mycompany.njtspringbioskop.entity.impl;
 
  
 import jakarta.persistence.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
+    
+    //dodajemo potreben kolone koje ce voditi evidenciju 
+    private boolean emailVerified = false; //da li je korisnik verifikovao mejl
+    private String verificationToken; //token za verifikaciju
+    private Instant verificationTokenExpiresAt; //do kad je token validan
+    
 
     public User() {}
     public User(Long id) { this.id = id; }
@@ -48,4 +55,35 @@ public class User {
     public void setRole(Role role) { this.role = role; }
     public List<Reservation> getReservations() { return reservations; }
     public void setReservations(List<Reservation> reservations) { this.reservations = reservations; }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
+    public Instant getVerificationTokenExpiresAt() {
+        return verificationTokenExpiresAt;
+    }
+
+    public void setVerificationTokenExpiresAt(Instant verificationTokenExpiresAt) {
+        this.verificationTokenExpiresAt = verificationTokenExpiresAt;
+    }
+
+
+
+
+
+
+
 }

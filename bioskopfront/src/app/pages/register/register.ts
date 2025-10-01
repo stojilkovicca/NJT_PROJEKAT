@@ -1,3 +1,4 @@
+// src/app/pages/register/register.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -58,6 +59,7 @@ import { AuthService } from '../../core/auth';
           </p>
 
           <p class="err" *ngIf="serverErr">{{ serverErr }}</p>
+          <p class="ok" *ngIf="okMsg">{{ okMsg }}</p>
         </form>
       </div>
     </section>
@@ -81,6 +83,7 @@ import { AuthService } from '../../core/auth';
     .btn.primary { background:#7c4dff; color:#fff; border:none; border-radius:12px; padding:12px 16px; cursor:pointer; }
     .btn.primary[disabled]{ opacity:.6; cursor:not-allowed; }
     .err { color:#ffb4b4; font-size:.88rem; }
+    .ok { color:#7CFFB4; font-size:.95rem; }
     .small { color:#9aa3b2; font-size:.92rem; }
     .small a { color:#cfd3dc; text-decoration:underline; }
   `]
@@ -88,6 +91,7 @@ import { AuthService } from '../../core/auth';
 export class RegisterComponent {
   loading = false;
   serverErr = '';
+  okMsg = '';
 
   form!: FormGroup<{
     username: FormControl<string>;
@@ -110,21 +114,21 @@ export class RegisterComponent {
   get f() { return this.form.controls; }
 
   submit() {
-    this.serverErr = '';
+    this.serverErr = ''; this.okMsg = '';
     if (this.form.invalid) return;
 
     this.loading = true;
     this.auth.register(this.form.getRawValue()).subscribe({
       next: () => {
         this.loading = false;
-        //   posle registracije: poruka + redirect na /login
-        this.router.navigate(['/login'], { queryParams: { registered: '1' } });
+        // ne čuvati token ovde (login je blokiran dok se mejl ne verifikuje).
+        this.okMsg = 'Uspešna registracija. Proveri svoj e-mail i klikni na verifikacioni link.';
+ 
       },
       error: (e) => {
         this.loading = false;
-        this.serverErr = typeof e?.error === 'string' ? e.error : 'Registracija nije uspela.';
+        this.serverErr = typeof e?.error === 'string' ? e.error : (e?.error?.message || 'Registracija nije uspela.');
       }
     });
   }
-
 }

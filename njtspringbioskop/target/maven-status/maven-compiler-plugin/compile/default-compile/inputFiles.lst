@@ -13,6 +13,7 @@ C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompa
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\security\JwtUtil.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\auth\LoginResponse.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\servis\MovieServis.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\servis\AuthService.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\ProjectionRepository.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\HallRepository.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\impl\SeatRepository.java
@@ -56,6 +57,7 @@ C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompa
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\GenreDto.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\repository\UserRepository.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\BioskopAplikacija.java
+C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\servis\MailService.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\dto\impl\ReservationDto.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\entity\impl\Ticket.java
 C:\Users\vanja\Desktop\NJT ALEKSANDAR\njtspringbioskop\src\main\java\com\mycompany\njtspringbioskop\security\AppUserDetailsService.java

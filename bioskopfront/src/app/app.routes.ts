@@ -14,10 +14,12 @@ import { ProjectionsPageComponent } from './admin/projections-page/projections-p
 import { HallsPageComponent } from './admin/halls-page/halls-page';
 import { LoginComponent } from './pages/login/login';
 import { ReservationsPageComponent } from './admin/reservations-page/reservations-page';
+import VerifyComponent from './pages/verify/verify';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'register', component: RegisterComponent }, 
+   { path: 'verify', component: VerifyComponent },    
    { path: 'login', component: LoginComponent },
   { path: 'movies', component: MoviesComponent },
   { path: 'movies/:id', component: MovieDetailsComponent },

@@ -19,4 +19,9 @@ public interface UserRepository {
     boolean existsByEmail(String email);
 
     User save(User user);
+    
+    
+     // DODATO za slanje mejla putem registracije
+    Optional<User> findByEmail(String email);
+    Optional<User> findByVerificationToken(String token);
 }
